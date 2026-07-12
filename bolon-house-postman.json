@@ -1,0 +1,328 @@
+{
+  "info": {
+    "name": "Bolón House API",
+    "description": "Colección de endpoints del sistema de ventas Bolón House (Auth, Productos, Pedidos, Inventario).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "producto_id", "value": "" },
+    { "key": "pedido_id", "value": "" },
+    { "key": "usuario_id", "value": "" },
+    { "key": "insumo_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Perez\",\n  \"email\": \"juan@bolonhouse.com\",\n  \"password\": \"123456\",\n  \"rol\": \"mesero\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('token', data.token);",
+                  "  pm.collectionVariables.set('usuario_id', data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@bolonhouse.com\",\n  \"password\": \"admin123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Perfil actual (me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/auth/me"
+          }
+        },
+        {
+          "name": "Cerrar sesion (logout)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/auth/logout"
+          }
+        },
+        {
+          "name": "Listar usuarios (admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/auth/usuarios"
+          }
+        },
+        {
+          "name": "Actualizar usuario (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/auth/usuarios/{{usuario_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rol\": \"cajero\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar usuario (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/auth/usuarios/{{usuario_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/productos"
+          }
+        },
+        {
+          "name": "Listar productos por categoria",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/productos?categoria=Bolones"
+          }
+        },
+        {
+          "name": "Obtener producto por id",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/productos/{{producto_id}}"
+          }
+        },
+        {
+          "name": "Crear producto (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('producto_id', data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/productos",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Bolón Especial de Prueba\",\n  \"categoria\": \"Especiales\",\n  \"descripcion\": \"Producto de prueba desde Postman\",\n  \"precio\": 4.5,\n  \"disponible\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar producto (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/productos/{{producto_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"precio\": 4.75,\n  \"disponible\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar producto (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/productos/{{producto_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pedidos",
+      "item": [
+        {
+          "name": "Crear pedido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('pedido_id', data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/pedidos",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"producto\": \"b1\", \"cantidad\": 2, \"personalizacion\": \"Relleno: Queso, Masa: Verde\" },\n    { \"producto\": \"beb1\", \"cantidad\": 1 }\n  ],\n  \"cliente\": \"Cliente de Prueba\",\n  \"mesa\": \"3\",\n  \"notas\": \"Sin cebolla\",\n  \"metodoPago\": \"efectivo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar pedidos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/pedidos"
+          }
+        },
+        {
+          "name": "Listar pedidos por estado",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/pedidos?estado=pendiente"
+          }
+        },
+        {
+          "name": "Obtener pedido por id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/pedidos/{{pedido_id}}"
+          }
+        },
+        {
+          "name": "Actualizar estado de pedido",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/pedidos/{{pedido_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"en_proceso\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar pedido (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/pedidos/{{pedido_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventario",
+      "item": [
+        {
+          "name": "Listar inventario",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/inventario"
+          }
+        },
+        {
+          "name": "Crear insumo (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('insumo_id', data._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/inventario",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Servilletas\",\n  \"unidad\": \"paquetes\",\n  \"stock\": 20,\n  \"stockMinimo\": 5,\n  \"categoria\": \"Insumos\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar insumo (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/inventario/{{insumo_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 15\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar insumo (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/inventario/{{insumo_id}}"
+          }
+        }
+      ]
+    }
+  ]
+}
