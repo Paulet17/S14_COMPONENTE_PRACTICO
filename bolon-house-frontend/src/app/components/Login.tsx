@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router';
 import { Eye, EyeOff, AlertCircle, Leaf } from 'lucide-react';
 import { useAuth } from '../context/AppContext';
-import logoMP from '../../imports/logoMP.jpg';
+import logoMP from '../../imports/logoMP.png';
+
+
 
 export function Login() {
   const { login, isAuthenticated } = useAuth();
@@ -30,11 +32,7 @@ export function Login() {
     setLoading(false);
   };
 
-  const fillDemo = (role: 'admin' | 'employee') => {
-    setEmail(role === 'admin' ? 'admin@muchoplatano.com' : 'carlos@muchoplatano.com');
-    setPassword('123456');
-    setError('');
-  };
+
 
   return (
     <div className="min-h-screen flex" style={{ backgroundColor: '#1C2E36' }}>
@@ -45,9 +43,11 @@ export function Login() {
       >
         <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full opacity-10" style={{ backgroundColor: '#76BC43' }} />
         <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full opacity-10" style={{ backgroundColor: '#E9C040' }} />
-        <div className="relative z-10 flex flex-col items-center justify-center">
+       <div className="relative z-10 flex flex-col items-center justify-center">
           <img src={logoMP} alt="MuchoPlatano Logo" className="w-72 h-72 object-contain drop-shadow-2xl" />
-        </div>
+          <h1 className="text-white text-3xl font-bold mt-4">MuchoPlatano</h1>
+          <p className="text-base" style={{ color: '#76BC43' }}>Desayunos & Sabor</p>
+      </div>
       </div>
 
       {/* Right: Login form */}
@@ -124,31 +124,11 @@ export function Login() {
               </button>
             </form>
 
-            {/* Demo credentials */}
-            <div className="mt-5 rounded-xl p-4" style={{ backgroundColor: '#1C2E36' }}>
-              <p className="text-gray-500 text-xs font-medium mb-2">Acceso de demostración:</p>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => fillDemo('admin')}
-                  className="flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all hover:opacity-80"
-                  style={{ backgroundColor: '#76BC4320', color: '#76BC43', border: '1px solid #76BC4340' }}
-                >
-                  Admin
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillDemo('employee')}
-                  className="flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all hover:opacity-80"
-                  style={{ backgroundColor: '#E9C04020', color: '#E9C040', border: '1px solid #E9C04040' }}
-                >
-                  Empleado
-                </button>
+            
+            
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </div> 
   );
 }

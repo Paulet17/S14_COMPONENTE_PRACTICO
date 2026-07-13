@@ -80,7 +80,7 @@ export function Dashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-white text-2xl font-bold">{greeting()}, {user?.name?.split(' ')[0]}! 👋</h1>
+          <h1 className="text-white text-2xl font-bold">{greeting()}, {user?.name?.split(' ')[0]}! </h1>
           <p className="text-gray-400 text-sm mt-0.5 capitalize">
             {new Date().toLocaleDateString('es-EC', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>

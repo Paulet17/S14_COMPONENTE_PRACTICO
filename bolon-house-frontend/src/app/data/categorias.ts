@@ -4,14 +4,14 @@
 export type CategoriaInfo = { id: string; name: string; emoji: string };
 
 export const categoriaBackendAFrontend: Record<string, CategoriaInfo> = {
-  'Bolones': { id: 'bolones', name: 'Bolones', emoji: '🫓' },
-  'Tigrillos': { id: 'tigrillos', name: 'Tigrillos', emoji: '🌽' },
-  'Tortas de bolon': { id: 'tortas', name: 'Tortas de Bolón', emoji: '🍕' },
-  'Tortillas': { id: 'tortillas', name: 'Tortillas', emoji: '🥞' },
-  'Especiales': { id: 'especiales', name: 'Especiales', emoji: '⭐' },
-  'Patacones': { id: 'patacones', name: 'Patacones', emoji: '🍌' },
-  'Bebidas': { id: 'bebidas', name: 'Bebidas', emoji: '☕' },
-  'Extras': { id: 'extras', name: 'Extras', emoji: '➕' },
+  'Bolones': { id: 'bolones', name: 'Bolones', emoji: '' },
+  'Tigrillos': { id: 'tigrillos', name: 'Tigrillos', emoji: '' },
+  'Tortas de bolon': { id: 'tortas', name: 'Tortas de Bolón', emoji: '' },
+  'Tortillas': { id: 'tortillas', name: 'Tortillas', emoji: '' },
+  'Especiales': { id: 'especiales', name: 'Especiales', emoji: '' },
+  'Patacones': { id: 'patacones', name: 'Patacones', emoji: '' },
+  'Bebidas': { id: 'bebidas', name: 'Bebidas', emoji: '' },
+  'Extras': { id: 'extras', name: 'Extras', emoji: '' },
 };
 
 export const categoriasBackend = Object.keys(categoriaBackendAFrontend);

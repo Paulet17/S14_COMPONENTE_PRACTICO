@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate, Navigate } from 'react-router';
-import { LayoutDashboard, BookOpen, Plus, ClipboardList, LogOut, Menu, X, ChefHat, User, Users, Package, BarChart2, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Plus, ClipboardList, LogOut, Menu, X, User, Users, Package, BarChart2, ShieldCheck, Shield, UserCheck } from 'lucide-react';
 import { useAuth } from '../context/AppContext';
+import logoMP from '../../imports/logoMP.png';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -41,9 +42,7 @@ function SidebarContent({ onClose, user, onLogout }: { onClose?: () => void; use
     <div className="flex flex-col h-full">
       <div className="p-6" style={{ borderBottom: '1px solid #2a4050' }}>
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg" style={{ backgroundColor: '#76BC43' }}>
-            <ChefHat className="w-6 h-6 text-white" />
-          </div>
+          <img src={logoMP} alt="MuchoPlatano Logo" className="w-11 h-11 object-contain shrink-0" />
           <div>
             <p className="text-white font-bold leading-tight">Mucho</p>
             <p className="font-bold leading-tight" style={{ color: '#76BC43' }}>Platano</p>
@@ -74,8 +73,15 @@ function SidebarContent({ onClose, user, onLogout }: { onClose?: () => void; use
 
       <div className="p-4" style={{ borderTop: '1px solid #2a4050' }}>
         <div className="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl" style={{ backgroundColor: '#2a4050' }}>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: '#E9C040' }}>
-            <User className="w-4 h-4" style={{ color: '#1C2E36' }} />
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+            style={{ backgroundColor: user?.role === 'admin' ? '#E9C040' : '#76BC43' }}
+          >
+            {user?.role === 'admin' ? (
+              <Shield className="w-4 h-4" style={{ color: '#1C2E36' }} />
+            ) : (
+              <UserCheck className="w-4 h-4" style={{ color: '#1C2E36' }} />
+            )}
           </div>
           <div className="overflow-hidden">
             <p className="text-white text-sm font-medium truncate">{user?.name}</p>
@@ -142,7 +148,7 @@ export function Root() {
             <Menu className="w-6 h-6" />
           </button>
           <div className="flex items-center gap-2">
-            <ChefHat className="w-5 h-5" style={{ color: '#76BC43' }} />
+            <img src={logoMP} alt="MuchoPlatano Logo" className="w-6 h-6 object-contain" />
             <span className="text-white font-bold">MuchoPlatano</span>
           </div>
           <div className="w-6" />

@@ -24,7 +24,7 @@ export const menuCategories: MenuCategory[] = [
     id: 'bolones',
     name: 'Bolones',
     subtitle: 'Masa de verde o Masa mixta',
-    emoji: '🫓',
+    emoji: '',
     items: [
       { id: 'b1', name: 'Bolón Sencillo', description: 'De queso, chicharrón o mixto', price: 2.50, variants: [{ label: 'Relleno', options: ['Queso', 'Chicharrón', 'Mixto'] }, { label: 'Masa', options: ['Verde', 'Mixta'] }] },
       { id: 'b2', name: 'Bolón + Huevo Frito', description: 'De queso, chicharrón o mixto con huevo frito', price: 3.00, variants: [{ label: 'Relleno', options: ['Queso', 'Chicharrón', 'Mixto'] }, { label: 'Masa', options: ['Verde', 'Mixta'] }] },
@@ -40,7 +40,7 @@ export const menuCategories: MenuCategory[] = [
     id: 'tigrillos',
     name: 'Tigrillos',
     subtitle: 'Masa de verde o Masa mixta',
-    emoji: '🌽',
+    emoji: '',
     items: [
       { id: 't1', name: 'Tigrillo Sencillo', description: 'Solo queso', price: 3.50, variants: [{ label: 'Masa', options: ['Verde', 'Mixta'] }] },
       { id: 't2', name: 'Tigrillo Mixto', description: 'Queso y chicharrón', price: 4.00, variants: [{ label: 'Masa', options: ['Verde', 'Mixta'] }] },
@@ -53,7 +53,7 @@ export const menuCategories: MenuCategory[] = [
   {
     id: 'tortas',
     name: 'Tortas de Bolón',
-    emoji: '🍕',
+    emoji: '',
     items: [
       { id: 'tb1', name: 'Torta Personal', description: 'Porción personal', price: 4.25 },
       { id: 'tb2', name: 'Torta 4-5 Personas', description: 'Para 4 a 5 personas', price: 12.50 },
@@ -64,7 +64,7 @@ export const menuCategories: MenuCategory[] = [
   {
     id: 'tortillas',
     name: 'Tortillas',
-    emoji: '🥞',
+    emoji: '',
     items: [
       { id: 'to1', name: 'Tortilla de Queso', description: 'Tortilla de queso clásica', price: 2.50 },
       { id: 'to2', name: 'Tortilla + Huevo Frito', description: 'Con huevo frito', price: 2.75 },
@@ -75,7 +75,7 @@ export const menuCategories: MenuCategory[] = [
   {
     id: 'especiales',
     name: 'Especiales',
-    emoji: '⭐',
+    emoji: '',
     items: [
       { id: 'e1', name: 'Bolón Muchocrunchy', description: 'Bolón frito relleno de queso, extra chicharrón y salsa de queso', price: 4.25 },
       { id: 'e2', name: 'Bolón Montubio', description: 'Bolón a su gusto con longaniza, salsa de queso y sal prieta', price: 4.25, variants: [{ label: 'Relleno', options: ['Queso', 'Chicharrón', 'Mixto'] }, { label: 'Masa', options: ['Verde', 'Mixta'] }] },
@@ -86,7 +86,7 @@ export const menuCategories: MenuCategory[] = [
   {
     id: 'patacones',
     name: 'Patacones',
-    emoji: '🍌',
+    emoji: '',
     items: [
       { id: 'p1', name: 'Patacón con Crema de Queso', description: 'Con crema de queso', price: 2.50 },
       { id: 'p2', name: 'Patacón con Huevo Frito', description: 'Con huevo frito', price: 2.50 },
@@ -99,7 +99,7 @@ export const menuCategories: MenuCategory[] = [
   {
     id: 'bebidas',
     name: 'Bebidas',
-    emoji: '☕',
+    emoji: '',
     items: [
       { id: 'beb1', name: 'Café', description: 'Taza de café caliente', price: 0.75 },
       { id: 'beb2', name: 'Chocolate', description: 'Taza de chocolate caliente', price: 1.00 },
@@ -113,7 +113,7 @@ export const menuCategories: MenuCategory[] = [
   {
     id: 'extras',
     name: 'Extras',
-    emoji: '➕',
+    emoji: '',
     items: [
       { id: 'ex1', name: 'Huevo Frito', description: 'Un huevo frito', price: 0.50 },
       { id: 'ex2', name: 'Huevos Revueltos / Tortilla', description: 'Revueltos o tortilla de huevo', price: 1.00 },
