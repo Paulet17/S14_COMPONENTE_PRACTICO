@@ -38,7 +38,7 @@ export type Order = {
 
 // --- Adaptadores entre el modelo en espanol del backend y los tipos del diseno ---
 
-const rolBackendARole = (rol: string): UserRole => (rol === 'admin' ? 'admin' : 'employee');
+const rolBackendARole = (rol: string): UserRole => (rol === 'admin' ? 'admin' : 'employee' );
 const roleAFrontendRol = (role: UserRole): string => (role === 'admin' ? 'admin' : 'mesero');
 
 const usuarioBackendAUser = (u: any): User => ({
@@ -162,6 +162,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (user.role === 'admin') cargarUsuarios();
     }
   }, [user, cargarPedidos, cargarUsuarios]);
+
+  // NUEVO: vuelve a pedir las órdenes cada 5 segundos, mientras haya sesión activa
+  useEffect(() => {
+    if (!user) return;
+    const intervalo = setInterval(() => {
+      cargarPedidos();
+    }, 1000); // 1000 ms = 1 segundos
+
+    return () => clearInterval(intervalo);
+  }, [user, cargarPedidos]);
 
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     try {

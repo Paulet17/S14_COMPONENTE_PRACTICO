@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { Search, Plus, Minus, X, ShoppingCart, Check, ArrowLeft, Banknote, Smartphone } from 'lucide-react';
-import { menuCategories, MenuItem } from '../data/menu';
+import { MenuItem } from '../data/menu';
+import { useMenuData } from '../hooks/useMenuData';
 import { useOrders, PaymentMethod } from '../context/AppContext';
 
 type CartItem = {
@@ -22,8 +23,9 @@ type ModalState = {
 export function NewOrder() {
   const { addOrder } = useOrders();
   const navigate = useNavigate();
+  const menuCategories = useMenuData();
 
-  const [activeCategory, setActiveCategory] = useState(menuCategories[0].id);
+  const [activeCategory, setActiveCategory] = useState(menuCategories[0]?.id ?? '');
   const [search, setSearch] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState('');
@@ -33,16 +35,18 @@ export function NewOrder() {
   const [modal, setModal] = useState<ModalState | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const currentCat = useMemo(() => menuCategories.find(c => c.id === activeCategory) ?? menuCategories[0], [activeCategory]);
+  const currentCat = useMemo(() => menuCategories.find(c => c.id === activeCategory) ?? menuCategories[0], [activeCategory, menuCategories]);
 
   const displayItems = useMemo(() => {
+    if (!currentCat) return [];
     if (!search) return currentCat.items;
     const q = search.toLowerCase();
     return menuCategories.flatMap(c => c.items).filter(i =>
       i.name.toLowerCase().includes(q) || i.description.toLowerCase().includes(q)
     );
-  }, [search, currentCat]);
+  }, [search, currentCat, menuCategories]);
 
+  /*Suma todas las cantidades de todos los productos en el carrito */ 
   const cartTotal = useMemo(() => cart.reduce((s, i) => s + i.price * i.quantity, 0), [cart]);
   const cartCount = useMemo(() => cart.reduce((s, i) => s + i.quantity, 0), [cart]);
 
@@ -69,10 +73,12 @@ export function NewOrder() {
     setModal(null);
   };
 
+  /*Funcion para cambiar cantidad */
   const adjustQty = (id: string, delta: number) => {
     setCart(prev => prev.map(ci => ci.id === id ? { ...ci, quantity: Math.max(0, ci.quantity + delta) } : ci).filter(ci => ci.quantity > 0));
   };
 
+  /*El campo "Precio unit." editable  */
   const updatePrice = (id: string, value: string) => {
     const parsed = parseFloat(value);
     setCart(prev => prev.map(ci => ci.id === id ? { ...ci, price: isNaN(parsed) || parsed < 0 ? ci.price : parsed } : ci));

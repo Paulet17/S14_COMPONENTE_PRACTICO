@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ShoppingBag, DollarSign, Clock, UtensilsCrossed, Plus, BookOpen, TrendingUp, ArrowRight, Banknote, Smartphone } from 'lucide-react';
 import { useAuth, useOrders } from '../context/AppContext';
-import { menuCategories } from '../data/menu';
+import { useMenuData } from '../hooks/useMenuData';
 
-const totalMenuItems = menuCategories.reduce((acc, cat) => acc + cat.items.length, 0);
+
 
 const STATUS_COLORS: Record<string, string> = {
   pending: '#E9C040',
@@ -21,6 +21,7 @@ const STATUS_LABELS: Record<string, string> = {
   delivered: 'Entregado',
 };
 
+/*Funcion que muestra y suma los ingresos de la sema*/
 function getWeeklyData(orders: ReturnType<typeof useOrders>['orders']) {
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const today = new Date();
@@ -41,6 +42,8 @@ export function Dashboard() {
   const { user } = useAuth();
   const { orders } = useOrders();
   const navigate = useNavigate();
+  const menuCategories = useMenuData();
+  const totalMenuItems = useMemo(() => menuCategories.reduce((acc, cat) => acc + cat.items.length, 0), [menuCategories]);
 
   const todayStr = new Date().toDateString();
   const todayOrders = useMemo(() => orders.filter(o => new Date(o.createdAt).toDateString() === todayStr), [orders, todayStr]);
@@ -50,6 +53,7 @@ export function Dashboard() {
   const weeklyData = useMemo(() => getWeeklyData(orders), [orders]);
   const recentOrders = useMemo(() => orders.slice(0, 6), [orders]);
 
+ /*Funcion que muestra solo las órdenes de hoy*/
   const topItemsToday = useMemo(() => {
     const map = new Map<string, { name: string; qty: number; total: number }>();
     todayOrders.forEach(order => {
@@ -61,12 +65,14 @@ export function Dashboard() {
     return Array.from(map.values()).sort((a, b) => b.qty - a.qty).slice(0, 6);
   }, [todayOrders]);
 
+  /*Funcion que define el saludo*/
   const greeting = () => {
     const h = new Date().getHours();
     if (h < 12) return 'Buenos días';
     if (h < 18) return 'Buenas tardes';
     return 'Buenas noches';
   };
+
 
   const stats = [
     { label: 'Órdenes Hoy',      value: todayOrders.length.toString(),  icon: ShoppingBag,    accent: '#76BC43' },
@@ -299,7 +305,7 @@ export function Dashboard() {
                 {topItemsToday.map((item, idx) => {
                   const maxQty = topItemsToday[0].qty;
                   const pct = Math.round((item.qty / maxQty) * 100);
-                  const medals = ['🥇', '🥈', '🥉'];
+                  const medals = ['1', '2', '3'];
                   return (
                     <div key={item.name}>
                       <div className="flex items-center justify-between mb-1">

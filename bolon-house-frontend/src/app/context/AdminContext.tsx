@@ -84,6 +84,12 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     refreshProducts();
+
+    const intervalo = setInterval(() => {
+      refreshProducts();
+    }, 3000); // cada 3 segundos vuelve a pedir los productos
+
+    return () => clearInterval(intervalo);
   }, [refreshProducts]);
 
   const updateProductPrice = (id: string, price: number) => {

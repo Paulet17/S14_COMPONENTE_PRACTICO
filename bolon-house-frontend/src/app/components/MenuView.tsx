@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
 import { Search, Tag, ChevronDown, ChevronUp } from 'lucide-react';
-import { menuCategories } from '../data/menu';
+import { useMenuData } from '../hooks/useMenuData';
 
 export function MenuView() {
+  const menuCategories = useMenuData();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<Set<string>>(new Set(menuCategories.map(c => c.id)));
@@ -28,7 +29,7 @@ export function MenuView() {
           : cat.items,
       }))
       .filter(cat => cat.items.length > 0);
-  }, [activeCategory, search]);
+  }, [activeCategory, search, menuCategories]);
 
   const totalItems = menuCategories.reduce((s, c) => s + c.items.length, 0);
 

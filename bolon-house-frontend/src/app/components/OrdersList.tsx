@@ -8,6 +8,7 @@ const PAYMENT_CONFIG: Record<PaymentMethod, { label: string; icon: typeof Bankno
   transfer: { label: 'Transferencia', icon: Smartphone, color: '#60a5fa' },
 };
 
+/*Diccionario de configuración para los estados del pedido */
 const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: typeof Clock }> = {
   pending: { label: 'Pendiente', color: '#E9C040', icon: Clock },
   preparing: { label: 'Preparando', color: '#f97316', icon: Package },
@@ -33,6 +34,7 @@ function formatTime(date: Date) {
   return new Date(date).toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit' });
 }
 
+/*Compara la fecha de la orden con la de hoy */
 function formatDate(date: Date) {
   const d = new Date(date);
   const today = new Date();
@@ -181,9 +183,11 @@ export function OrdersList() {
                       {order.items.length > 2 && <span className="text-gray-500"> +{order.items.length - 2} más</span>}
                     </p>
 
+
                     <div className="flex items-center gap-3 mt-1.5">
                       <span className="font-bold text-sm" style={{ color: '#E9C040' }}>${order.total.toFixed(2)}</span>
                       {(() => {
+                        /*el método de pago (efectivo/transferencia). */
                         const pm = PAYMENT_CONFIG[order.paymentMethod] ?? PAYMENT_CONFIG['cash'];
                         const Icon = pm.icon;
                         return (
